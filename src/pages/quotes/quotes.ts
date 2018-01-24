@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import { NavParams} from 'ionic-angular';
 import { Quote } from '../../data/quote.interface';
+import { QuotesService } from '../../services/quotes';
 
 @Component({
   selector: 'page-quotes',
@@ -10,7 +11,7 @@ import { Quote } from '../../data/quote.interface';
 export class QuotesPage implements OnInit {
   quoteGroup: {category: string, quotes: Quote[], icon: string};
 
-  constructor(private navParams: NavParams, private alertCtrl: AlertController){
+  constructor(private navParams: NavParams, private alertCtrl: AlertController, private quoteService: QuotesService){
     //alternative method is shown below but this is also correct
     // this.quoteGroup = this.navParams.data;
   }
@@ -19,7 +20,7 @@ export class QuotesPage implements OnInit {
     this.quoteGroup = this.navParams.data;
   }
 
-  onAddToFavorite(selectedQuote: Quote){
+  onAddToFavorites(selectedQuote: Quote){
     const alert = this.alertCtrl.create({
       title: 'Add Quote',
       subTitle: 'Are you sure?',
@@ -29,7 +30,7 @@ export class QuotesPage implements OnInit {
         {
           text: 'Yes, go ahead',
           handler: () => {
-            console.log('Ok');
+            this.quoteService.addQuoteToFavorites(selectedQuote);
           }
         },
         {
@@ -43,6 +44,14 @@ export class QuotesPage implements OnInit {
     });
 
     alert.present();
+  }
+
+  onRemoveFromFavorites(quote: Quote){
+    this.quoteService.removeQuoteFromFavorites(quote);
+  }
+
+  isFavorite(quote: Quote){
+    return this.quoteService.isQuoteFavorite(quote);
   }
 
   //ionViewDidLoad(){
