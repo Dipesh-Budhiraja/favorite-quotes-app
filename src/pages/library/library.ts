@@ -1,0 +1,19 @@
+import { Component } from '@angular/core';
+import { Quote } from '@angular/compiler';
+import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import quotes from '../../data/quotes';
+import { QuotesPage } from '../quotes/quotes';
+
+@Component({
+  selector: 'page-library',
+  templateUrl: 'library.html',
+})
+export class LibraryPage implements OnInit {
+    quoteCollection: {category: string, quotes: Quote[], icon: string}[];
+
+    quotesPage = QuotesPage
+
+    ngOnInit(){
+      this.quoteCollection = quotes;
+    }
+}
